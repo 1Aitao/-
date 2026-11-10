@@ -26,8 +26,8 @@ http://127.0.0.1:5000
 
 预置账号（可通过环境变量覆盖）：
 
-- 账号：`admin`（`FMS_ADMIN_USER`）
-- 密码：`admin123`（`FMS_ADMIN_PASS`）
+- 账号：`qwer`（`FMS_ADMIN_USER`）
+- 密码：`qwerlol`（`FMS_ADMIN_PASS`）
 
 首次启动自动创建 `data/` 目录（SQLite 元数据库 + 文件存储），该目录已加入 `.gitignore`。
 

@@ -10,8 +10,8 @@ DB_PATH = os.path.join(DATA_DIR, "fms.db")
 STORAGE_DIR = os.path.join(DATA_DIR, "storage")
 
 # 预置管理员账号（本期不开放注册）
-ADMIN_USERNAME = os.environ.get("FMS_ADMIN_USER", "admin")
-ADMIN_PASSWORD = os.environ.get("FMS_ADMIN_PASS", "admin123")
+ADMIN_USERNAME = os.environ.get("FMS_ADMIN_USER", "qwer")
+ADMIN_PASSWORD = os.environ.get("FMS_ADMIN_PASS", "qwerlol")
 
 # 会话密钥（生产环境应通过环境变量注入随机值）
 SECRET_KEY = os.environ.get("FMS_SECRET_KEY", "fms-dev-secret-key-change-me")
