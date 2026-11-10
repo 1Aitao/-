@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """文件核心链路：列表/搜索/排序（FR-03/08/09）、上传（FR-02）、下载（FR-04）、删除（FR-05）。"""
 import os
+import sqlite3
 import time
 
 from flask import Blueprint, jsonify, request, send_file
@@ -13,6 +14,14 @@ bp = Blueprint("files", __name__)
 
 
 # ---------- 通用工具 ----------
+
+def parse_parent_id(raw) -> int:
+    """解析 parent_id：非数字输入返回友好提示，不暴露内部异常信息。"""
+    try:
+        return int(raw)
+    except (TypeError, ValueError):
+        raise ValueError("parent_id 不合法")
+
 
 def get_node(node_id: int):
     rows = db.query("SELECT * FROM nodes WHERE id = ?", (node_id,))
@@ -151,7 +160,7 @@ def upload():
     文件本体以随机存储名落盘，元数据与落盘先后失败时互相清理，避免脏状态。
     """
     try:
-        parent_id = int(request.form.get("parent_id", 0))
+        parent_id = parse_parent_id(request.form.get("parent_id", 0))
         parent = check_parent(parent_id)
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
@@ -190,14 +199,25 @@ def upload():
             actual_size = os.path.getsize(dest)
             if actual_size > config.MAX_FILE_SIZE:
                 raise ValueError(f"文件超过 50MB 上限")
-            final_name = unique_name(parent_id, display_name)
-            now = time.strftime("%Y-%m-%d %H:%M:%S")
-            node_id = db.execute(
-                """INSERT INTO nodes (type, name, parent_id, stored_name, size, mime, created_at, updated_at)
-                   VALUES ('file', ?, ?, ?, ?, ?, ?, ?)""",
-                (final_name, parent_id if parent_id else None, stored,
-                 actual_size, f.mimetype or "application/octet-stream", now, now),
-            )
+            final_name = display_name
+            node_id = None
+            # 并发同名上传时 unique_name 检查与 INSERT 之间存在竞态窗口，
+            # 撞 UNIQUE 约束则重算唯一名重试（有限次）
+            for _ in range(3):
+                final_name = unique_name(parent_id, display_name)
+                now = time.strftime("%Y-%m-%d %H:%M:%S")
+                try:
+                    node_id = db.execute(
+                        """INSERT INTO nodes (type, name, parent_id, stored_name, size, mime, created_at, updated_at)
+                           VALUES ('file', ?, ?, ?, ?, ?, ?, ?)""",
+                        (final_name, parent_id if parent_id else None, stored,
+                         actual_size, f.mimetype or "application/octet-stream", now, now),
+                    )
+                    break
+                except sqlite3.IntegrityError:
+                    node_id = None  # 重算唯一名后再试
+            if node_id is None:
+                raise ValueError("系统繁忙，上传冲突，请重试")
             results.append({"name": final_name, "id": node_id, "ok": True,
                             "renamed": final_name != display_name})
         except Exception as e:

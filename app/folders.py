@@ -6,7 +6,7 @@ from flask import Blueprint, jsonify, request
 
 from . import config
 from .auth import login_required
-from .files import breadcrumb, check_parent, folder_depth, get_node, unique_name
+from .files import breadcrumb, check_parent, folder_depth, get_node, parse_parent_id, unique_name
 from .db import execute
 from .security import validate_name
 
@@ -19,7 +19,7 @@ def create_folder():
     """新建文件夹，同目录重名时自动追加序号（与文件重名策略一致）。"""
     data = request.get_json(silent=True) or {}
     try:
-        parent_id = int(data.get("parent_id", 0))
+        parent_id = parse_parent_id(data.get("parent_id", 0))
         parent = check_parent(parent_id)
         name = validate_name(data.get("name"))
     except ValueError as e:
