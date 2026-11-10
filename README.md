@@ -51,11 +51,11 @@ python run.py
 
 | 方法 | 路径 | 关键参数 | 响应 |
 |------|------|----------|------|
-| POST | `/api/login` | JSON：`username`、`password` | `{"user": "admin"}`，失败 401 |
+| POST | `/api/login` | JSON：`username`、`password` | `{"user": "qwer"}`，失败 401 |
 | POST | `/api/logout` | — | `{"ok": true}` |
-| GET | `/api/me` | — | `{"user": "admin"}` / 401 |
+| GET | `/api/me` | — | `{"user": "qwer"}` / 401 |
 | GET | `/api/nodes` | `parent_id`、`keyword`（全局搜索）、`sort`（name/size/updated_at）、`order`（asc/desc）、`page`、`page_size` | `{"items":[], "total", "page", "breadcrumb":[], "keyword"}` |
-| POST | `/api/upload` | multipart：`parent_id` + `files[]`（可多选） | `{"results":[{name,id,ok,renamed,message}], "success", "failed"}` |
+| POST | `/api/upload` | multipart：`parent_id` + `files`（文件字段名，可多选） | `{"results":[{name,id,ok,renamed,message}], "success", "failed"}` |
 | GET | `/api/download/<id>` | 路径参数文件 id | 文件流（`Content-Disposition` 映射回原始文件名） |
 | POST | `/api/folders` | JSON：`name`、`parent_id` | `{"id", "name", "renamed"}` |
 | PATCH | `/api/nodes/<id>` | JSON：`name` | `{"id", "name", "renamed"}` |
