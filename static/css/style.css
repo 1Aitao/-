@@ -1,0 +1,106 @@
+/* 文件管理系统样式 */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --bg: #f5f7fa;
+  --border: #e2e8f0;
+  --text: #1e293b;
+  --text-light: #64748b;
+  --danger: #dc2626;
+}
+
+body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; background: var(--bg); color: var(--text); }
+
+/* ---- 登录页 ---- */
+.login-body { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+.login-card {
+  background: #fff; border: 1px solid var(--border); border-radius: 12px;
+  padding: 40px 36px; width: 360px; box-shadow: 0 4px 24px rgba(0,0,0,.06);
+}
+.login-card h1 { font-size: 22px; text-align: center; }
+.login-sub { color: var(--text-light); font-size: 13px; text-align: center; margin: 8px 0 24px; }
+.login-card input {
+  width: 100%; padding: 10px 12px; margin-bottom: 14px; border: 1px solid var(--border);
+  border-radius: 8px; font-size: 14px;
+}
+.login-card input:focus { outline: 2px solid var(--primary); border-color: transparent; }
+.login-card button {
+  width: 100%; padding: 10px; background: var(--primary); color: #fff; border: none;
+  border-radius: 8px; font-size: 15px; cursor: pointer;
+}
+.login-card button:disabled { opacity: .6; cursor: wait; }
+.login-error { color: var(--danger); font-size: 13px; margin: -6px 0 12px; }
+
+/* ---- 顶栏 ---- */
+.topbar {
+  display: flex; align-items: center; gap: 16px; padding: 12px 24px;
+  background: #fff; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10;
+}
+.brand { font-weight: 700; font-size: 17px; white-space: nowrap; }
+#search-box {
+  flex: 1; max-width: 420px; padding: 8px 14px; border: 1px solid var(--border);
+  border-radius: 20px; font-size: 14px;
+}
+.topbar-right { margin-left: auto; display: flex; align-items: center; gap: 12px; color: var(--text-light); }
+
+/* ---- 主体 ---- */
+.main { max-width: 1080px; margin: 0 auto; padding: 20px 24px; }
+.breadcrumb { font-size: 14px; margin-bottom: 12px; color: var(--text-light); }
+.breadcrumb a { color: var(--primary); text-decoration: none; cursor: pointer; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb .sep { margin: 0 6px; color: #cbd5e1; }
+
+.toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+.toolbar-hint { color: var(--text-light); font-size: 13px; flex: 1; }
+.sort-group { font-size: 13px; color: var(--text-light); }
+.sort-group select { padding: 4px 6px; border: 1px solid var(--border); border-radius: 6px; }
+
+.btn {
+  padding: 8px 14px; border: 1px solid var(--border); border-radius: 8px; background: #fff;
+  font-size: 14px; cursor: pointer;
+}
+.btn:hover { background: #f1f5f9; }
+.btn.primary { background: var(--primary); border-color: var(--primary); color: #fff; }
+.btn.primary:hover { background: var(--primary-dark); }
+.btn.ghost { border-color: transparent; background: transparent; color: var(--text-light); }
+.btn.ghost:hover { background: #f1f5f9; }
+.btn.danger-text { color: var(--danger); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+
+/* ---- 上传状态面板 ---- */
+#upload-panel { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; }
+.upload-item { display: flex; justify-content: space-between; padding: 5px 0; font-size: 13px; }
+.upload-status.ok { color: #16a34a; }
+.upload-status.fail { color: var(--danger); }
+.upload-status.doing { color: var(--text-light); }
+
+/* ---- 文件表 ---- */
+.file-table { width: 100%; background: #fff; border: 1px solid var(--border); border-radius: 8px; border-collapse: separate; border-spacing: 0; overflow: hidden; }
+.file-table th, .file-table td { padding: 11px 14px; text-align: left; font-size: 14px; }
+.file-table thead th { background: #f8fafc; color: var(--text-light); font-weight: 500; border-bottom: 1px solid var(--border); }
+.file-table tbody tr { border-bottom: 1px solid #f1f5f9; }
+.file-table tbody tr:last-child { border-bottom: none; }
+.file-table tbody tr:hover { background: #f8fafc; }
+.file-name { display: flex; align-items: center; gap: 8px; cursor: default; word-break: break-all; }
+.file-name.clickable { cursor: pointer; color: var(--primary); }
+.file-size, .file-time { color: var(--text-light); }
+.ops button { margin-right: 6px; padding: 4px 8px; font-size: 12px; }
+
+.empty-tip { text-align: center; color: var(--text-light); padding: 48px 0; font-size: 14px; }
+
+.pager { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 16px; font-size: 13px; color: var(--text-light); }
+
+/* ---- 弹窗 ---- */
+dialog { border: none; border-radius: 12px; padding: 24px; width: 360px; box-shadow: 0 8px 32px rgba(0,0,0,.15); }
+dialog::backdrop { background: rgba(15,23,42,.4); }
+dialog h3 { font-size: 16px; margin-bottom: 14px; }
+dialog input { width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; }
+.dialog-error { color: var(--danger); font-size: 12px; margin-top: 6px; }
+.dialog-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
+
+@media (max-width: 720px) {
+  .col-size, .col-ops .btn.rename { display: none; }
+  #search-box { max-width: none; }
+}
