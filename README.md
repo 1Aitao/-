@@ -11,25 +11,39 @@
 | 文件存储 | 服务端本地磁盘 `data/storage/` | 符合本期边界（不接对象存储）；以 UUID 随机存储名落盘，实现存储隔离 |
 | 前端 | 原生 HTML / CSS / JS | 无构建步骤，结构清晰，聚焦核心链路体验 |
 
-## 运行说明
+## 快速开始（克隆后 3 步跑起来）
+
+环境要求：已安装 Python 3.10+（开发验证使用 3.12）与 Git。
 
 ```bash
-# 1. 安装依赖（建议虚拟环境）
+# 1. 克隆仓库
+git clone https://github.com/1Aitao/-.git
+cd -
+
+# 2. 安装依赖（建议虚拟环境，也可以直接装）
 pip install -r requirements.txt
 
-# 2. 启动服务
+# 3. 启动服务
 python run.py
-
-# 3. 浏览器访问
-http://127.0.0.1:5000
 ```
+
+启动后浏览器访问 <http://127.0.0.1:5000>，使用下方预置账号登录即可。
 
 预置账号（可通过环境变量覆盖）：
 
 - 账号：`qwer`（`FMS_ADMIN_USER`）
 - 密码：`qwerlol`（`FMS_ADMIN_PASS`）
 
-首次启动自动创建 `data/` 目录（SQLite 元数据库 + 文件存储），该目录已加入 `.gitignore`。
+### 常见问题
+
+| 现象 | 处理 |
+|------|------|
+| `python` 不是内部或外部命令 | 安装 Python 时勾选了未加入 PATH，重装勾选 "Add Python to PATH"，或改用 `py run.py` |
+| 端口 5000 被占用 | 先关闭占用程序，或换端口启动：`set FMS_PORT=8000`（PowerShell 用 `$env:FMS_PORT=8000`）后运行 `python run.py` |
+| pip 安装慢/超时 | 使用国内镜像：`pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple` |
+| 想让同一网络的其他电脑访问 | PowerShell 执行 `$env:FMS_HOST="0.0.0.0"` 后启动，访问 `http://<本机IP>:5000`（需放行防火墙 5000 端口） |
+
+首次启动自动创建 `data/` 目录（SQLite 元数据库 + 文件存储），该目录已加入 `.gitignore`，删除后重启即恢复全新状态。
 
 ## 接口说明
 
